@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const partnerRouter = require("../routes/partnerRouter");
 const Schema = mongoose.Schema;
 
 const partnerSchema = new Schema({
