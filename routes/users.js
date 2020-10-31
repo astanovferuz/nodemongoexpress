@@ -5,8 +5,19 @@ const passport = require("passport");
 const authenticate = require('../authenticate');    
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.get('/', authenticate.verifyUser, authenticate.verifyAdmin, function(req, res, next) {
+  if(req.user.admin)  {
+    User.find()
+    .then(users => {
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json");
+      res.json(users);
+    });
+  } else {
+    const err = new Error("You are not authorized to view this doc. Please log in as admin!");
+    err.status = 401;
+    return next(err)
+  }
 });
 
 router.post('/signup', (req, res) => {
