@@ -7,18 +7,13 @@ const cors = require("./cors");
 
 /* GET users listing. */
 router.get('/', cors.corsWithOptions,  authenticate.verifyUser, authenticate.verifyAdmin, function(req, res, next) {
-  if(req.user.admin)  {
     User.find()
     .then(users => {
       res.statusCode = 200;
       res.setHeader("Content-Type", "application/json");
       res.json(users);
-    });
-  } else {
-    const err = new Error("You are not authorized to view this doc. Please log in as admin!");
-    err.status = 401;
-    return next(err)
-  }
+    })
+    .catch(err => next(err));
 });
 
 router.post('/signup', cors.corsWithOptions,  (req, res) => {
